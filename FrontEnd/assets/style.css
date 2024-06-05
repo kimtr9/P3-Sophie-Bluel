@@ -170,6 +170,8 @@ body {
 	background-color: #FFFEF8;
 }
 
+/* Login */
+
 #login-li a {
 	text-decoration-line: none;
 	color: black;
@@ -179,7 +181,6 @@ body {
 	font-weight: 800;
 
 }
-
 
 .login {
 	margin-bottom: 30%;
@@ -207,7 +208,6 @@ body {
 	color: #3D3D3D;
 
 }
-
 
 .login-form input {
 	height: 50px;
@@ -284,3 +284,79 @@ footer li {
 	font-size: 14px;
 }
 
+/* Mode édition */
+
+ .edition-mode-bar {
+	background-color: black;
+	height: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0;
+}
+
+.edition-mode-bar p, a, i {
+	color: #FFFFFF;
+	text-decoration: none;
+	display: flex;
+    gap: 10px;
+
+}
+
+/*modal*/
+
+.modal {
+	position: fixed;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	top: 0;
+	left: 0;
+	width: 100% ;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.6);
+}
+
+.modal-wrapper {
+	overflow: auto;
+	width: 40%;
+	max-width: calc(100vw - 20px);
+	height: 600px;
+	max-height: calc(100vh - 20px);
+	padding: 20px;
+	margin: 300px;
+	background-color: #FFFFFF;
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+}
+
+.modal-wrapper #add-picture {
+	background-color: #1D6154;
+	color: white;
+	font-family:'Syne';
+	font-size: 14px;
+	margin: 20px;
+	padding: 10px 40px 10px 40px;
+	border-radius: 30px;
+	border: none;
+}
+.modal-wrapper h2 {
+	color: black;
+	font-weight: 200;
+}
+.mini-gallery {
+	height: 500px;
+	width: 80%;
+	border-bottom: #B3B3B3 solid 2px;
+}
+
+#close-modal {
+	width: 100%;
+	display: flex;
+	justify-content: right;
+	border: none;
+	background-color: white;
+}
