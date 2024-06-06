@@ -29,7 +29,8 @@ loginForm.addEventListener('submit', async (event) => {
         // Stockage du token dans le localStorage
         localStorage.setItem("token", data.token)
         // redirection vers page d'accueil 
-        window.location.href = "./../../index.html";
+        window.location.href = "index.html";
+        
         
     } catch (error) {
         console.log('Erreur: ', error)

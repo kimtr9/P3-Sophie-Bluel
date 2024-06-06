@@ -128,9 +128,12 @@ li:hover {
 #introduction p {
 	margin-bottom: 0.5em;
 }
+
+#portfolio {
+	margin-top: 100px;
+}
 #portfolio h2 {
 	text-align: center;
-	margin-bottom: 1em;
 }
 .gallery {
 	width: 100%;
@@ -148,6 +151,7 @@ li:hover {
 .filter-buttons {
 	display: flex;
 	justify-content: center;
+	margin-bottom: 30px;
 }
 
 .filter-buttons button {
@@ -290,73 +294,36 @@ footer li {
 	background-color: black;
 	height: 50px;
 	display: flex;
-	align-items: center;
-	justify-content: center;
+	align-content: center;
+	padding: 0;
 	margin: 0;
+	max-width: none !important;
 }
 
-.edition-mode-bar p, a, i {
+.edition-mode-bar a {
 	color: #FFFFFF;
 	text-decoration: none;
 	display: flex;
+	align-items: center;
+	justify-content: center;
     gap: 10px;
 
 }
 
-/*modal*/
-
-.modal {
-	position: fixed;
+.projects {
 	display: flex;
-	align-items: center;
 	justify-content: center;
-	top: 0;
-	left: 0;
-	width: 100% ;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.6);
-}
-
-.modal-wrapper {
-	overflow: auto;
-	width: 40%;
-	max-width: calc(100vw - 20px);
-	height: 600px;
-	max-height: calc(100vh - 20px);
-	padding: 20px;
-	margin: 300px;
-	background-color: #FFFFFF;
-	border-radius: 10px;
-	display: flex;
-	flex-direction: column;
 	align-items: center;
+	gap: 15px;
+	margin-bottom: 30px;
 
 }
 
-.modal-wrapper #add-picture {
-	background-color: #1D6154;
-	color: white;
-	font-family:'Syne';
-	font-size: 14px;
-	margin: 20px;
-	padding: 10px 40px 10px 40px;
-	border-radius: 30px;
+.projects button {
+	background-color: #FFFFFF;
 	border: none;
 }
-.modal-wrapper h2 {
-	color: black;
-	font-weight: 200;
-}
-.mini-gallery {
-	height: 500px;
-	width: 80%;
-	border-bottom: #B3B3B3 solid 2px;
-}
 
-#close-modal {
-	width: 100%;
-	display: flex;
-	justify-content: right;
-	border: none;
-	background-color: white;
+.projects i {
+	margin-right: 10px;
 }

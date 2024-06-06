@@ -12,34 +12,26 @@
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
-	<script src="index.js"defer></script>
+	<script src="assets/JS/index.js"defer></script>
+	
+	
+	
 </head>
 <body>
-	<div class="edition-mode-bar">
+	<div class="edition-mode-bar" style="display: none;">
 		<a href="#edition-mode"> 
 		   <i class="fa-solid fa-pen-to-square" style="color: #ffff;"></i>
 		   <p>Mode édition</p>
 		</a>
-	   </div> 
-   
-	   <a href="#modal1">Ouvrir la boîte modal</a>
-   
-	   <aside id="modal1" class="modal" aria-hidden="true" role="dialog" aria-modal="false" aria-labelledby="titlemodal" style="display: none;">
-		   <div class="modal-wrapper">
-			   <button id="close-modal"> <i class="fa-solid fa-xmark" style="color: #000000;"></i></button>
-			   <h2 id="titlemodal">Galerie Photo</h2>
-			   <div class="mini-gallery"></div>
-			   <button id="add-picture">Ajouter une photo</button>
-		  </div>
-	   </aside>
+	</div> 
    
 <header>
 	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 	<nav>
 		<ul>
-			<li> <a>projets</a></li>
+			<li> <a href="#portfolio">projets</a></li>
 			<li> <a href="#contact">contact</a></li>
-			<li> <a href="login.html">login</a></li>
+			<li> <a href="login.html" class="login-link">login</a></li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
@@ -57,8 +49,12 @@
 		</article>
 	</section>
 	<section id="portfolio">
-		<h2>Mes Projets</h2>
-		<div class="filter-buttons">
+		<div class="projects">
+		  <h2>Mes Projets</h2>
+		  <button style="display: none;"><i class="fa-regular fa-pen-to-square" style="color: #050505;"></i>modifier </button>
+	      </div>
+
+		<div class="filter-buttons" style="display: flex;">
 		</div>
 		<div class="gallery">
 		</div>

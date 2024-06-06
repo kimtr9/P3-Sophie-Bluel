@@ -85,3 +85,50 @@ async function startGallery() {
     displayGallery();
 }
 startGallery();
+
+
+
+
+//**********************Mode édition************************///
+
+//Fonction gestion de mise à jour d'affichage  quand l'utilisateur est connecté (mode édition)
+function updateToEditionMode() {
+    const token = localStorage.getItem('token');
+    const isLoggedIn = !!token; // Vérifie si le token existe
+
+    const editionBar = document.querySelector('.edition-mode-bar');
+    const editProjectsButton = document.querySelector('.projects button');
+    const logInLink = document.querySelector('.login-link')
+    const filterBar = document.querySelector('.filter-buttons');
+
+    if (editionBar && editProjectsButton) { // Vérifie que les éléments existent
+        if (isLoggedIn) {
+            console.log('Utilisateur connecté');
+            editionBar.style.display = 'block';
+            editProjectsButton.style.display = 'block';
+            filterBar.style.display = 'none';
+            logInLink.innerText = 'logout'
+            logInLink.href = '#';
+
+            logInLink.addEventListener('click', (event) => {
+                event.preventDefault();
+                localStorage.removeItem('token');
+                 window.location.reload();
+            })
+        } else {
+            console.log('Utilisateur deconnecté')
+            editionBar.style.display = 'none';
+            editProjectsButton.style.display = 'none';
+            filterBar.style.display = 'flex';
+            logInLink.innerText = 'login';
+            logInLink.href = 'login.html';
+        }
+} else {
+    console.error('Eléments non trouvés');
+}}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    updateToEditionMode();
+});
+
