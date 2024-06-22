@@ -13,7 +13,7 @@
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
 	<script src="assets/JS/index.js"defer></script>
-	<script src="assets/JS/modal.js"defer></script>
+	
 	
 	
 	
@@ -39,15 +39,19 @@
 	</nav>
 </header>
 
-<aside id="modal1" class="js-modal" aria-hidden="true" aria-modal="false" role="dialog" style="display: none;">
-	<div class="modal-wrapper js-modal-stop">
+<aside id="modal" class="js-modal" aria-hidden="true" aria-modal="false" role="dialog" style="display: none;">
+	<div  id = "modal1" class="modal-wrapper js-modal-stop">
 		<button id="close-modal"><i class="fa-solid fa-xmark" style="color: #050505;"></i></button>
 		<h2 id="title-modal">Galerie photo</h2>
 		<div class="modal-gallery"></div>
 		<button id="add-work-picture">Ajouter une photo</button>
 	</div>
 
-	<form id="upload-form"></form>
+	<form id="modal2" >
+		<div class="form-container">
+
+		</div>
+	</form>
 </aside>
 
 
@@ -69,7 +73,7 @@
 	<section id="portfolio">
 		<div class="projects">
 		  <h2>Mes Projets</h2>
-		  <button class="open-modal" style="display: none;"> <i class="fa-regular fa-pen-to-square" style="color: #050505;"></i><a href="#modal1">modifier</a></button>
+		  <button class="open-modal" style="display: none;"> <i class="fa-regular fa-pen-to-square" style="color: #050505;"></i><a href="#modal">modifier</a></button>
 	      </div>
 
 		<div class="filter-buttons" style="display: flex;">
