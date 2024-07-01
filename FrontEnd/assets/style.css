@@ -373,11 +373,14 @@ footer li {
     color: white;
     font-family:'Syne';
     font-size: 14px;
-    margin: 30px;
-    padding: 10px 40px 10px 40px;
+    margin: 20px;
+	width: 90%;
+    padding: 10px 20px 10px 20px;
     border-radius: 30px;
     border: none;
 	cursor: pointer;
+	display: flex;
+	justify-content: center;
 }
 #modal1 h2 {
     color: black;
@@ -385,6 +388,8 @@ footer li {
 	font-size: 20px;
 	font-weight: 200;
 	padding: 20px;
+	display: flex;
+	justify-content: center;
 }
 .modal-gallery {
     border-bottom: #eed4d4 solid 2px;
@@ -454,7 +459,7 @@ footer li {
 	width: 40%;
     max-width: calc(100vw - 20px);
     max-height: calc(100vh - 20px);
-    padding: 35px;
+    padding: 45px;
     margin: 300px;
     background-color: #FFFFFF;
     border-radius: 10px;
@@ -498,30 +503,32 @@ footer li {
 	padding: 25px;
 	display: flex;
 	justify-content: center;
+	align-items: center;
 }
 
- #upload-pic {
-	display: flex;
+ #upload-pic-input {
+	display: none;
 	justify-content: center;
-	z-index: 0;
+	z-index: 1;
+	opacity: 0;
+	
 }
 
 #upload-container {
 	background-color: #E8F1F6 ;
-	padding: 15px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	position: relative;
+	width: 100%;
 
 }
 #upload-container p {
 	z-index: 0;
-}
-
-#upload-container input {
-	z-index: 1;
-	opacity: 0;
+	color: black;
+	padding-bottom: 15px;
+	max-height: 100px;
 }
 
 #upload-container i {
@@ -530,6 +537,7 @@ footer li {
 }
 
 #add-pic-btn {
+	width: 50%;
 	background-color: #CBD6DC;
 	color: #306685;
 	font-family: 'Work Sans';
@@ -539,18 +547,19 @@ footer li {
 	margin-bottom: 10px;
 	border: none;
 	cursor: pointer;
+	z-index: 0;
+	display: flex;
+	justify-content: center;
 }
 
 #add-pic-btn:hover {
 	box-shadow: 2px 2px 6px #00000017;
-	;
 }
 
-.input-field{
+#input-title, #category-select {
 	border: none;
 	box-shadow: 1px 1px 5px #00000017;
 	height: 40px;
-
 }
 
 #submit-work-btn {
@@ -571,3 +580,34 @@ footer li {
 	background-color: #1D6154 ;
 }
 
+#category-select {
+	width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    background: #fff;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#category-select option {
+	font-family: 'Work Sans';
+	font-size: 14px;
+}
+
+
+#preview-container {
+	display: none;
+	width: 100%;
+	max-height: 200px;
+	display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+}
+
+#preview-pic {
+	max-width: 50%;
+	max-height: 100%;
+	object-fit: contain;
+}

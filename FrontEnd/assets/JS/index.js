@@ -71,7 +71,7 @@ function displayGallery(filteredWorks = works, container = '.gallery')  {
         figure.appendChild(figcaption);
         HTMLgallery.appendChild(figure);
     });
-     // attache écouteurs de clic pour les icônes de suppression
+     // afichage en focntion de la galerie présente
      if (container === '.modal-gallery') {
         attachListenerstoDeleteIcons();
     }
@@ -125,8 +125,7 @@ function updateToEditionMode() {
     const logInLink = document.querySelector('.login-link')
     const filterBar = document.querySelector('.filter-buttons');
 
-    if (editionBar && editProjectsButton) { // Vérifie que les éléments existent
-        if (isLoggedIn) {
+    if (isLoggedIn) {
             console.log('Utilisateur connecté');
             editionBar.style.display = 'block';
             editProjectsButton.style.display = 'block';
@@ -139,17 +138,16 @@ function updateToEditionMode() {
                 localStorage.removeItem('token');
                  window.location.reload();
             })
-        } else {
+    } else {
             console.log('Utilisateur deconnecté')
             editionBar.style.display = 'none';
             editProjectsButton.style.display = 'none';
             filterBar.style.display = 'flex';
             logInLink.innerText = 'login';
             logInLink.href = 'login.html';
-        }
-} else {
-    console.error('Eléments non trouvés');
-}}
+           }
+    }
+
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -159,7 +157,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 /////*******************MODALE ***********************//////
-
 //Ouvrir la modale 1
 const openModal1 = function (e) {
     e.preventDefault();
@@ -170,7 +167,7 @@ const openModal1 = function (e) {
     const modal1 = document.getElementById('modal1')
 
     modal1.style.display = 'block';
-    modal1.querySelector('.modal-gallery').innerHTML = ''; // Reinitialiser la galerie
+    modal1.querySelector('.modal-gallery').innerHTML = ''; 
     displayGallery(works, '.modal-gallery'); // Réafficher la galerie
 
     //afficher modal
@@ -198,14 +195,14 @@ const openModal1 = function (e) {
 }
 
 const openModalBtn = document.querySelector('.open-modal')
-openModalBtn.addEventListener('click', o)
+openModalBtn.addEventListener('click', openModal1)
 
 
 
 // Fermer la modale
 const closeModal = function (e) {
     if(modal === null) return;
-    e.preventDefault();
+    e.preventDefault(); 
     const modal1 = document.getElementById('modal1');
     const modal2 = document.getElementById('modal2');
     modal1.style.display = 'none';
@@ -232,18 +229,8 @@ window.addEventListener('keydown', function(e) {
 
 
 
-// Fonction pour attacher les écouteurs sur toutes les icônes
-function attachListenerstoDeleteIcons() {
-    document.querySelectorAll('.delete-icon').forEach(icon => {
-        icon.addEventListener('click', async (e) => {
-            e.preventDefault();
-            await deleteWork(e);
-        });
-    });
-}
 
-
-//Fonction de suppression de l'imagee
+//Fonction de suppression de l'image
 async function deleteWork(event) {
     const figure = event.target.closest('figure');
     const imgId = figure.dataset.imgId;
@@ -275,18 +262,18 @@ async function deleteWork(event) {
     } 
 }
 
-// Retour à modal1
-const returnToModal1 = function(e) {
-    e.preventDefault();
-    //afficher modal1
-    const modal1 = document.getElementById('modal1');
-    modal1.style.display = 'block';
-    //cacher modal2
-    const modal2 = document.getElementById('modal2');
-    modal2.style.display = 'none'
+
+
+// Fonction pour attacher les écouteurs sur toutes les icônes delete
+function attachListenerstoDeleteIcons() {
+    document.querySelectorAll('.delete-icon').forEach(icon => {
+        icon.addEventListener('click', async (e) => {
+            e.preventDefault();
+            await deleteWork(e);
+        });
+    });
 }
 
-   
 
 // Switch modal2
 const showModal2 = function(e) {
@@ -295,9 +282,10 @@ const showModal2 = function(e) {
     modal1.style.display = 'none';
     const modal2 = document.getElementById('modal2');
     modal2.style.display = 'block'
-    
+
     //Créer le formulaire
-    const formContainer = document.querySelector('.form-container');
+    const formContainer = document.createElement('div')
+    formContainer.className = 'form-container'
     // Vider la modale pour eviter les doublons 
     formContainer.innerHTML = '';
     modal2.innerHTML = '';
@@ -316,33 +304,77 @@ const showModal2 = function(e) {
     const uploadContainer = document.createElement('div')
     uploadContainer.id = 'upload-container';
 
-    const icon = document.createElement('i')
-    icon.className = "fa-regular fa-image";
-    icon.style.color = "#c6c8cd";
-
-    const inputFile = document.createElement('input')
-    inputFile.type = 'file';
-    inputFile.textContent = 'Ajout'
-    inputFile.id = 'upload-pic';
-
     const addPicBtn = document.createElement('button')
     addPicBtn.textContent = ' + Ajouter une photo'
     addPicBtn.id = 'add-pic-btn'
 
+    const inputFile = document.createElement('input')
+    inputFile.type = 'file';
+    inputFile.accept = '.jpg, .png'
+    inputFile.id = 'upload-pic-input';
+
+
+    // Ajout d'un écouteur d'événement pour le preview de l'image
+    inputFile.addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file && (file.type === 'image/png' || file.type === 'image/jpg')) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const previewPic = document.getElementById('preview-pic');
+                previewPic.src = e.target.result;
+                previewPic.style.display = 'block';
+                addPicBtn.style.display = 'none';
+                subText.style.display = 'none';
+                const previewIcon = document.getElementById('preview-icon');
+                if (previewIcon) previewIcon.style.display = 'none';
+            };
+    
+            reader.readAsDataURL(file);
+        } else {
+            alert('Choisir un fichier image jpg ou png');
+        }
+    });
+
+    //Associer input et bouton au click
+    addPicBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        inputFile.click()
+    });
+
+
     const subText = document.createElement('p')
     subText.textContent= 'jpg, png : 4mo max'
 
+    const previewContainer = document.createElement('div');
+    previewContainer.id = 'preview-container';
+    const previewPic = document.createElement('img');
+    previewPic.id = 'preview-pic';
+    previewPic.style.display = 'none'; 
+
+    const icon = document.createElement('i')
+    icon.className = "fa-regular fa-image";
+    icon.id = 'preview-icon'
+    icon.style.color = "#c6c8cd";
+
     const inputTitle = document.createElement('input');
     inputTitle.type = 'text';
-    inputTitle.classList.add('input-field');
+    inputTitle.id = 'input-title'
 
     const labelTitle = document.createElement('label');
     labelTitle.textContent= 'Titre';
     labelTitle.classList.add('label');
 
-    const inputCat = document.createElement('input');
-    inputCat.type = 'text';
-    inputCat.classList.add('input-field');
+    const inputCat = document.createElement('select');
+    inputCat.type = 'select'
+    inputCat.id = 'category-select'
+
+    // Remplir le select des catégories
+    categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category.id;
+        option.textContent = category.name;
+        inputCat.appendChild(option);
+    });
 
     const labelCat = document.createElement('label');
     labelCat.textContent= 'Catégorie';
@@ -350,16 +382,19 @@ const showModal2 = function(e) {
 
     const buttonSubmit = document.createElement('button');
     buttonSubmit.id = 'submit-work-btn';
-    buttonSubmit.textContent = "Valider";
+    buttonSubmit.type = 'submit'
+    buttonSubmit.textContent = 'Valider';
     
     modal2.appendChild(formContainer)
     formContainer.appendChild(returnIcon)
     formContainer.appendChild(closeIcon)
     formContainer.appendChild(title)
     formContainer.appendChild(uploadContainer)
-    uploadContainer.appendChild(icon)
-    uploadContainer.appendChild(inputFile)
+    uploadContainer.appendChild(previewContainer);
+    previewContainer.appendChild(icon)
+    previewContainer.appendChild(previewPic);
     uploadContainer.appendChild(addPicBtn)
+    uploadContainer.appendChild(inputFile)
     uploadContainer.appendChild(subText);
     formContainer.appendChild(labelTitle)
     formContainer.appendChild(inputTitle)
@@ -367,36 +402,103 @@ const showModal2 = function(e) {
     formContainer.appendChild(inputCat)
     modal2.appendChild(buttonSubmit)
 
-    modal2.addEventListener('click', stopPropagation)
 
+
+    modal2.addEventListener('click', stopPropagation)
 
     // attacher evenement de retour à l'icone <-
     returnIcon.addEventListener('click', returnToModal1);
-    // attacher l'evenement de fermeture au click sur l'icone close
+    // attacher l'evenement de fermeture au click sur l'icone X
     closeIcon.addEventListener('click', closeModal);
 
 };
+
 
 // Ecouteur d'evenement sur le bouton vers la modale 2
 const addWorkbtn = document.getElementById('add-work-picture')
 addWorkbtn.addEventListener('click', showModal2);
 
+// Retour à modal1
+const returnToModal1 = function(e) {
+    e.preventDefault();
+    //afficher modal1
+    const modal1 = document.getElementById('modal1');
+    modal1.style.display = 'block';
+    //cacher modal2
+    const modal2 = document.getElementById('modal2');
+    modal2.style.display = 'none'
+}
 
-// assure que l'événement de retour est correctement attaché
-document.getElementById('modal2').addEventListener('click', (e) => {
-    if (e.target.id === 'return-icon') {
-        returnToModal1(e);
+
+
+
+
+/////********Envoi d'un nouveau projet via le formulaire******/////
+// Ajouter un nouveau work
+async function addWork(event) {
+    event.preventDefault();
+
+    const inputFile = document.getElementById('upload-pic-input');
+    const inputTitle = document.getElementById('input-title');
+    const inputCat = document.getElementById('category-select');
+
+    // Vérifier si tous les champs sont remplis
+    if (!inputFile.files[0] || !inputTitle || !inputCat) {
+        console.error('Tous les champs ne sont pas remplis');
+
+        if (!inputFile.files[0]) {
+            alert ('Veuillez sélectionner une image.');
+        }
+
+        if (inputFile.files.length > 0) {
+            const fileSize = inputFile.files[0].size; // Taille en octets
+            const maxSize = 4194304; // 4 Mo en octets
+    
+            if (fileSize > maxSize) {
+                alert('Le fichier est trop volumineux');
+                inputFile.value = '';
+            }
+        }
+        if (!inputTitle) {
+            alert ('Veuillez saisir un titre.');
+        }
+        if (!inputCat) {
+            alert ('Veuillez sélectionner une catégorie.');
+        }
+        
+        return;
     }
-});
 
-
-
-
+    // Créer un FormData pour envoyer le fichier
+    const formData = new FormData();
+    formData.append('image', inputFile.files[0]);
+    formData.append('title', inputTitle);
+    formData.append('category', inputCat);
     
 
+    try {
+        const response = await fetch('http://localhost:5678/api/works', {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+            body: formData,
+        });
+
+        if (response.ok) {
+            const newWork = await response.json();
+            works.push(newWork);
+            displayGallery();
+            closeModal(); // Fermer la modale si la requête a fonctionné
+        } else {
+            console.error('Erreur lors de l\'ajout du travail');
+        }
+    } catch (error) {
+        console.error('Erreur', error);
+    }
+}
 
 
-
-
-
-
+// Attacher événement submit au form
+const modal2 = document.getElementById('modal2'); 
+modal2.addEventListener('submit', addWork);
