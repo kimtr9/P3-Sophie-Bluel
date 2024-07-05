@@ -30,13 +30,16 @@ async function getCategories() {
 }
 
 
-// Affichage des travaux dans la galerie
-
-//même fonction pour afficher works ou filteredWorks
+//Affichage de la galerie
+//Fonction pour afficher works ou filteredWorks
 function displayGallery(filteredWorks = works, container = '.gallery')  {
     //vider la galerie HTML
     const HTMLgallery = document.querySelector(container);
     HTMLgallery.innerHTML = '';
+
+    const gallery = document.querySelector('.gallery')
+    const portfolioSection = document.getElementById('portfolio')
+    portfolioSection.appendChild(gallery)
 
     //création de la galerie
     filteredWorks.forEach(work => {
@@ -71,18 +74,26 @@ function displayGallery(filteredWorks = works, container = '.gallery')  {
         figure.appendChild(figcaption);
         HTMLgallery.appendChild(figure);
     });
-     // afichage en focntion de la galerie présente
+     // affichage en focntion de la galerie présente
      if (container === '.modal-gallery') {
         attachListenerstoDeleteIcons();
     }
 }
-    
 
 //Création des boutons de filtre
 function createFilterButtons() {
-    const filterBar = document.querySelector('.filter-buttons');
-    filterBar.innerHTML = '';
+    let filterBar = document.querySelector('.filter-buttons')
+    
+    if (!filterBar) {
+        filterBar = document.createElement('div');
+        filterBar.classList.add('filter-buttons');
 
+        const portfolioSection = document.getElementById('portfolio');
+        portfolioSection.appendChild(filterBar);
+    } else {
+        filterBar.innerHTML = '';
+    }
+    
     const allButton = document.createElement('button');
     allButton.innerText= 'Tous';
     allButton.addEventListener('click', () => displayGallery(works));
@@ -110,28 +121,45 @@ async function startGallery() {
 startGallery();
 
 
-
-
-
 //**********************Mode édition************************///
 
 //Fonction gestion de mise à jour d'affichage quand l'utilisateur est connecté
 function updateToEditionMode() {
     const token = localStorage.getItem('token');
-    const isLoggedIn = !!token; // Vérifie si le token existe
+    const isLoggedIn = !!token; 
 
-    const editionBar = document.querySelector('.edition-mode-bar');
-    const editProjectsButton = document.querySelector('.projects button');
     const logInLink = document.querySelector('.login-link')
     const filterBar = document.querySelector('.filter-buttons');
+    const header = document.querySelector('.header')
+    const projectSection = document.querySelector('.projects');
+
+    //création du bouton modifier et bar d'édition
+    const openModalBtn = document.createElement('button')
+    openModalBtn.className = 'open-modal';
+    const openModalIcon = document.createElement('i')
+    openModalIcon.className = 'fa-regular fa-pen-to-square';
+    const openModalBtnContent = document.createElement('p')
+    openModalBtnContent.textContent= 'modifier';
+    openModalBtn.appendChild(openModalIcon);
+    openModalBtn.appendChild(openModalBtnContent)
+    projectSection.appendChild(openModalBtn);
+
+    const editionBar = document.createElement('div')
+    editionBar.className = 'edition-mode-bar';
+    const editionBarContent = document.createElement('p')
+    editionBarContent.textContent = 'Mode édition'
+  
+    const editionBarIcon = document.createElement('i');
+    editionBarIcon.className = 'fa-solid fa-pen-to-square';
+    editionBar.appendChild(editionBarIcon);
+    editionBar.appendChild(editionBarContent)
+    header.appendChild(editionBar)
 
     if (isLoggedIn) {
             console.log('Utilisateur connecté');
-            editionBar.style.display = 'block';
-            editProjectsButton.style.display = 'block';
+            header.style.marginTop = '80px';
             filterBar.style.display = 'none';
             logInLink.innerText = 'logout'
-            logInLink.href = '#';
 
             logInLink.addEventListener('click', (event) => {
                 event.preventDefault();
@@ -141,93 +169,144 @@ function updateToEditionMode() {
     } else {
             console.log('Utilisateur deconnecté')
             editionBar.style.display = 'none';
-            editProjectsButton.style.display = 'none';
+            openModalBtn.style.display = 'none';
             filterBar.style.display = 'flex';
             logInLink.innerText = 'login';
             logInLink.href = 'login.html';
-           }
+
+        }
+
+
+        openModalBtn.addEventListener('click', openModal1);
     }
 
-
-
 document.addEventListener('DOMContentLoaded', () => {
+    createFilterButtons()
     updateToEditionMode();
 });
 
 
 
 /////*******************MODALE ***********************//////
-//Ouvrir la modale 1
+
+
+// Ouvrir la modale au click sur le clic
+
+// Ouvrir la modal1
 const openModal1 = function (e) {
     e.preventDefault();
-    if (modal !== null) {
-        closeModal();
-    }
-    modal = document.querySelector('.js-modal')
+
+    modal = document.getElementById('modal');
+    modal.style.display = '';
+    modal.setAttribute('aria-hidden', 'false');
+    modal.setAttribute('aria-modal', 'true');
+    modal.addEventListener('click', closeModal);
+    modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation);
+    
+
+    //ouvrir modal1
     const modal1 = document.getElementById('modal1')
+    modal1.style.display = 'block'
+    if (modal1) {
+        modal1.innerHTML = '';
+    }else if (!modal1) {
+        // Créer modal1
+        modal1 = document.createElement('div');
+        modal1.id = 'modal1';
+        modal1.classList.add('js-modal-stop');
+    }
 
-    modal1.style.display = 'block';
-    modal1.querySelector('.modal-gallery').innerHTML = ''; 
-    displayGallery(works, '.modal-gallery'); // Réafficher la galerie
+       // Créer le bouton de fermeture
+       const closeModalBtn = document.createElement('button');
+       closeModalBtn.id = 'close-modal';
+       const closeModalIcon = document.createElement('i')
+       closeModalIcon.className = 'fa-solid fa-xmark';
+        
+       // Créer le titre de la modale
+       const titleModal1 = document.createElement('h2');
+       titleModal1.id = 'title-modal';
+       titleModal1.textContent = 'Galerie photo';
+    
+       // Créer le conteneur pour la galerie
+       const modalGallery = document.createElement('div');
+       modalGallery.className = 'modal-gallery';
 
-    //afficher modal
-    const target = document.querySelector(e.target.getAttribute('href'))
-    target.style.display = null;
-    target.removeAttribute('aria-hidden')
-    target.setAttribute('aria-modal', 'true')
-    modal = target;
-    modal.addEventListener('click', closeModal)
-    //Affichage de la galerie
-    displayGallery(works, '.modal-gallery');
-    modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation)
+       // Créer le bouton pour ajouter une photo
+       const addWorkPicBtn = document.createElement('button');
+       addWorkPicBtn.id = 'add-work-picture';
+       addWorkPicBtn.textContent = 'Ajouter une photo';
+    
+       // Ajouter tous les éléments créés au DOM
+       modal.appendChild(modal1);
+       modal1.appendChild(closeModalBtn);
+       closeModalBtn.appendChild(closeModalIcon)
+       modal1.appendChild(titleModal1);
+       modal1.appendChild(modalGallery);
+       modal1.appendChild(addWorkPicBtn);
 
-    //cacher modal2
-    const modal2 = document.getElementById('modal2')
+
+       // Réinitialiser et afficher la galerie
+       if (modalGallery) {
+       modalGallery.innerHTML = ''; 
+       displayGallery(works, '.modal-gallery'); // Réafficher la galerie
+       }
+
+    modal.removeAttribute('aria-hidden')
+    modal.setAttribute('aria-modal', 'true')
+    modal.addEventListener('click', closeModal);
+    modal1.addEventListener('click', stopPropagation);
+
+    // Cacher modal2 
+    const modal2 = document.getElementById('modal2');
     if (modal2) {
         modal2.style.display = 'none';
     }
-   
-     // Attacher le click à l'icône X
-     const closeButton = document.getElementById('close-modal');
-     if (closeButton) {
-         closeButton.addEventListener('click', closeModal);
-     }
-}
 
-const openModalBtn = document.querySelector('.open-modal')
-openModalBtn.addEventListener('click', openModal1)
+    // Ecouteur d'evenement sur le bouton vers la modale 2
+    const addWorkbtn = document.getElementById('add-work-picture')
+    addWorkbtn.addEventListener('click', showModal2);
 
+    closeModalBtn.addEventListener('click', closeModal); 
 
+    
+};
 
 // Fermer la modale
 const closeModal = function (e) {
     if(modal === null) return;
-    e.preventDefault(); 
+
     const modal1 = document.getElementById('modal1');
     const modal2 = document.getElementById('modal2');
     modal1.style.display = 'none';
     modal2.style.display = 'none';
 
-    modal = document.getElementById('modal');
     modal.style.display = 'none'
     modal.setAttribute('aria-hidden', 'true');
     modal.removeAttribute('aria-modal');
     modal.removeEventListener('click', closeModal);
-    modal.removeEventListener('click', stopPropagation);
-    modal = null;
+
+
+    // enlever event listeners
+    modal1.removeEventListener('click', stopPropagation);
+    const addWorkbtn = document.getElementById('add-work-picture');
+    addWorkbtn.removeEventListener('click', showModal2);
+    const closeModalBtn = document.getElementById('close-modal')
+    closeModalBtn.removeEventListener('click', closeModal);
+
+ 
+    modal2.removeEventListener('click', stopPropagation);
+    
 }
 
 const stopPropagation = function (e) {
     e.stopPropagation();
 }
-    
+
 window.addEventListener('keydown', function(e) {
     if (e.key === 'Escape' ||  e.key === 'Esc') {
         closeModal(e)
     }
 });
-
-
 
 
 //Fonction de suppression de l'image
@@ -262,8 +341,6 @@ async function deleteWork(event) {
     } 
 }
 
-
-
 // Fonction pour attacher les écouteurs sur toutes les icônes delete
 function attachListenerstoDeleteIcons() {
     document.querySelectorAll('.delete-icon').forEach(icon => {
@@ -281,7 +358,10 @@ const showModal2 = function(e) {
     const modal1 = document.getElementById('modal1');
     modal1.style.display = 'none';
     const modal2 = document.getElementById('modal2');
-    modal2.style.display = 'block'
+    modal2.style.display = 'block';
+    const modal = document.getElementById('modal');
+    modal.style.display= '';
+    
 
     //Créer le formulaire
     const formContainer = document.createElement('div')
@@ -293,10 +373,11 @@ const showModal2 = function(e) {
     const returnIcon = document.createElement('i')
     returnIcon.className = "fa-solid fa-arrow-left"
     returnIcon.id = 'return-button'
-    const closeIcon = document.createElement('i')
-    closeIcon.className = "fa-solid fa-xmark";
-    closeIcon.id = 'close-upload-modal'
-
+    const closeBtn = document.createElement('i')
+    closeBtn.id = 'close-upload-modal'
+    const closeModalIcon = document.createElement('i')
+    closeModalIcon.className = 'fa-solid fa-xmark';
+    
     const title = document.createElement('h2');
     title.id = "title-modal";
     title.textContent  = 'Ajout photo';
@@ -387,7 +468,8 @@ const showModal2 = function(e) {
     
     modal2.appendChild(formContainer)
     formContainer.appendChild(returnIcon)
-    formContainer.appendChild(closeIcon)
+    formContainer.appendChild(closeBtn)
+    closeBtn.appendChild(closeModalIcon)
     formContainer.appendChild(title)
     formContainer.appendChild(uploadContainer)
     uploadContainer.appendChild(previewContainer);
@@ -403,32 +485,27 @@ const showModal2 = function(e) {
     modal2.appendChild(buttonSubmit)
 
 
-
     modal2.addEventListener('click', stopPropagation)
 
     // attacher evenement de retour à l'icone <-
     returnIcon.addEventListener('click', returnToModal1);
     // attacher l'evenement de fermeture au click sur l'icone X
-    closeIcon.addEventListener('click', closeModal);
+    closeBtn.addEventListener('click', closeModal);
 
 };
 
 
-// Ecouteur d'evenement sur le bouton vers la modale 2
-const addWorkbtn = document.getElementById('add-work-picture')
-addWorkbtn.addEventListener('click', showModal2);
-
 // Retour à modal1
 const returnToModal1 = function(e) {
-    e.preventDefault();
     //afficher modal1
     const modal1 = document.getElementById('modal1');
     modal1.style.display = 'block';
+   
     //cacher modal2
     const modal2 = document.getElementById('modal2');
-    modal2.style.display = 'none'
-}
+    modal2.style.display = 'none';
 
+}
 
 
 
@@ -460,10 +537,10 @@ async function addWork(event) {
             }
         }
         if (!inputTitle) {
-            alert ('Veuillez saisir un titre.');
+            alert ('Veuillez saisir un titre');
         }
         if (!inputCat) {
-            alert ('Veuillez sélectionner une catégorie.');
+            alert ('Veuillez sélectionner une catégorie');
         }
         
         return;
@@ -472,8 +549,8 @@ async function addWork(event) {
     // Créer un FormData pour envoyer le fichier
     const formData = new FormData();
     formData.append('image', inputFile.files[0]);
-    formData.append('title', inputTitle);
-    formData.append('category', inputCat);
+    formData.append('title', inputTitle.value);
+    formData.append('category', inputCat.value);
     
 
     try {
@@ -502,3 +579,4 @@ async function addWork(event) {
 // Attacher événement submit au form
 const modal2 = document.getElementById('modal2'); 
 modal2.addEventListener('submit', addWork);
+
