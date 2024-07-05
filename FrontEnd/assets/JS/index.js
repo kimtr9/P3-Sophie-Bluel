@@ -117,11 +117,12 @@ async function startGallery() {
     await getCategories();
     createFilterButtons();
     displayGallery();
+    createModals();
 }
 startGallery();
 
 
-//**********************Mode édition************************///
+//**********************Mode édition************************//
 
 //Fonction gestion de mise à jour d'affichage quand l'utilisateur est connecté
 function updateToEditionMode() {
@@ -175,8 +176,6 @@ function updateToEditionMode() {
             logInLink.href = 'login.html';
 
         }
-
-
         openModalBtn.addEventListener('click', openModal1);
     }
 
@@ -189,13 +188,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /////*******************MODALE ***********************//////
 
+// Création des modales
+function createModals() {
+    modal = document.createElement('aside');
+    modal.id = 'modal';
+    modal.className = 'js-modal';
+    modal.setAttribute('aria-hidden', 'true');
+    modal.setAttribute('aria-modal', 'false');
+    modal.style.display = 'none';
 
-// Ouvrir la modale au click sur le clic
+    const modal1 = document.createElement('div');
+    modal1.id = 'modal1';
+    modal1.className = 'js-modal-stop';
+
+    const modal2 = document.createElement('form');
+    modal2.id = 'modal2';
+
+    modal.appendChild(modal1);
+    modal.appendChild(modal2);
+    document.body.appendChild(modal);
+}
 
 // Ouvrir la modal1
-const openModal1 = function (e) {
-    e.preventDefault();
-
+const openModal1 = function () {
     modal = document.getElementById('modal');
     modal.style.display = '';
     modal.setAttribute('aria-hidden', 'false');
@@ -207,13 +222,14 @@ const openModal1 = function (e) {
     //ouvrir modal1
     const modal1 = document.getElementById('modal1')
     modal1.style.display = 'block'
+    modal1.addEventListener('click', stopPropagation);
+
+    modal.removeAttribute('aria-hidden')
+    modal.setAttribute('aria-modal', 'true')
+    modal.addEventListener('click', closeModal);
+
     if (modal1) {
         modal1.innerHTML = '';
-    }else if (!modal1) {
-        // Créer modal1
-        modal1 = document.createElement('div');
-        modal1.id = 'modal1';
-        modal1.classList.add('js-modal-stop');
     }
 
        // Créer le bouton de fermeture
@@ -251,11 +267,6 @@ const openModal1 = function (e) {
        displayGallery(works, '.modal-gallery'); // Réafficher la galerie
        }
 
-    modal.removeAttribute('aria-hidden')
-    modal.setAttribute('aria-modal', 'true')
-    modal.addEventListener('click', closeModal);
-    modal1.addEventListener('click', stopPropagation);
-
     // Cacher modal2 
     const modal2 = document.getElementById('modal2');
     if (modal2) {
@@ -267,12 +278,10 @@ const openModal1 = function (e) {
     addWorkbtn.addEventListener('click', showModal2);
 
     closeModalBtn.addEventListener('click', closeModal); 
-
-    
 };
 
 // Fermer la modale
-const closeModal = function (e) {
+const closeModal = function () {
     if(modal === null) return;
 
     const modal1 = document.getElementById('modal1');
@@ -292,8 +301,6 @@ const closeModal = function (e) {
     addWorkbtn.removeEventListener('click', showModal2);
     const closeModalBtn = document.getElementById('close-modal')
     closeModalBtn.removeEventListener('click', closeModal);
-
- 
     modal2.removeEventListener('click', stopPropagation);
     
 }
@@ -353,8 +360,7 @@ function attachListenerstoDeleteIcons() {
 
 
 // Switch modal2
-const showModal2 = function(e) {
-    e.preventDefault();
+const showModal2 = function() {
     const modal1 = document.getElementById('modal1');
     modal1.style.display = 'none';
     const modal2 = document.getElementById('modal2');
@@ -486,27 +492,25 @@ const showModal2 = function(e) {
 
 
     modal2.addEventListener('click', stopPropagation)
-
     // attacher evenement de retour à l'icone <-
     returnIcon.addEventListener('click', returnToModal1);
     // attacher l'evenement de fermeture au click sur l'icone X
     closeBtn.addEventListener('click', closeModal);
 
+    modal2.addEventListener('submit', addWork);
+
 };
 
 
 // Retour à modal1
-const returnToModal1 = function(e) {
+const returnToModal1 = function() {
     //afficher modal1
     const modal1 = document.getElementById('modal1');
     modal1.style.display = 'block';
-   
     //cacher modal2
     const modal2 = document.getElementById('modal2');
     modal2.style.display = 'none';
-
 }
-
 
 
 
@@ -524,19 +528,19 @@ async function addWork(event) {
         console.error('Tous les champs ne sont pas remplis');
 
         if (!inputFile.files[0]) {
-            alert ('Veuillez sélectionner une image.');
+            alert ('Sélectionnez une image.');
         }
 
         if (inputFile.files.length > 0) {
             const fileSize = inputFile.files[0].size; // Taille en octets
-            const maxSize = 4194304; // 4 Mo en octets
+            const maxSize = 4194304; // 4 Mo
     
             if (fileSize > maxSize) {
-                alert('Le fichier est trop volumineux');
+                alert('Fichier trop volumineux');
                 inputFile.value = '';
             }
         }
-        if (!inputTitle) {
+        if (!inputTitle.value) {
             alert ('Veuillez saisir un titre');
         }
         if (!inputCat) {
@@ -576,7 +580,4 @@ async function addWork(event) {
 }
 
 
-// Attacher événement submit au form
-const modal2 = document.getElementById('modal2'); 
-modal2.addEventListener('submit', addWork);
 
