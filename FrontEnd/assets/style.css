@@ -302,6 +302,7 @@ footer li {
     position: fixed;
     width: 100vw;
     top: 0;
+	left: 0;
     height: 50px;
     background-color: black;
     display: flex;
@@ -612,4 +613,122 @@ footer li {
 	max-width: 50%;
 	max-height: 100%;
 	object-fit: contain;
+}
+
+/****Responsive****/
+
+@media (min-width:769px)  and (max-width: 1100px) {
+	main {
+		margin: 20px;
+	}
+
+	header h1 {
+		margin-left: 10px;
+	}
+
+	#modal1 {
+		display: flex;
+		min-width: 400px;
+
+	}
+
+    #modal2 {
+        min-width: 330px;
+		max-height: 620px;
+    }
+}
+
+
+@media (min-width: 375px) and (max-width:768px) {
+	
+    header, nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+	main {
+		margin: 20px;
+	};
+
+	nav {
+		width: 100%;
+		display: flex;
+		justify-content: space-evenly;
+	}
+
+	nav ul {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+	}
+
+	nav ul img {
+		font-size: 2px;
+	}
+
+    #introduction {
+        flex-direction: column;
+    }
+
+	#introduction figure {
+		width: 80%;
+	}
+
+	article h2 {
+		margin-top: 20px;
+	}
+
+	#introduction article {
+		display: flex;
+		justify-content: center;
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+
+	#introduction p {
+		text-align: justify;
+	}
+
+	#portfolio {
+		margin-top: 20px
+	}
+
+	.filter-buttons {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	#gallery {
+		margin: 20px
+	}
+
+	#gallery figure {
+		padding : 0 20px;
+	}
+
+	.projects {
+		margin-left: 0px;
+	}
+
+	.projects p {
+		margin-left: 5px;
+	}
+
+	.open-modal {
+		font-size: 12px;
+		padding-left: 0px;
+	}
+
+	#modal1 {
+		display: flex;
+		min-width: 300px;
+
+	}
+
+    #modal2 {
+        min-width: 230px;
+		max-height: 520px;
+    }
+
+
 }
