@@ -1,5 +1,3 @@
-
-//Variables globales 
 let works = [];
 let categories = [];
 let modal = null 
@@ -7,7 +5,6 @@ const token = localStorage.getItem('token')
 
 
 //////**************PAGE DE PRESENTATION********************/////
-
 //Récupération des travaux de l'API
 async function getWorks () {
     try {
@@ -27,19 +24,18 @@ async function getCategories() {
         console.log('Erreur fetch des catégories', error)
 
     }
-}
+};
 
 
 //Affichage de la galerie
-//Fonction pour afficher works ou filteredWorks
 function displayGallery(filteredWorks = works, container = '.gallery')  {
     //vider la galerie HTML
     const HTMLgallery = document.querySelector(container);
     HTMLgallery.innerHTML = '';
 
-    const gallery = document.querySelector('.gallery')
-    const portfolioSection = document.getElementById('portfolio')
-    portfolioSection.appendChild(gallery)
+    const gallery = document.querySelector('.gallery');
+    const portfolioSection = document.getElementById('portfolio');
+    portfolioSection.appendChild(gallery);
 
     //création de la galerie
     filteredWorks.forEach(work => {
@@ -82,7 +78,7 @@ function displayGallery(filteredWorks = works, container = '.gallery')  {
 
 //Création des boutons de filtre
 function createFilterButtons() {
-    let filterBar = document.querySelector('.filter-buttons')
+    let filterBar = document.querySelector('.filter-buttons');
     
     if (!filterBar) {
         filterBar = document.createElement('div');
@@ -129,38 +125,38 @@ function updateToEditionMode() {
     const token = localStorage.getItem('token');
     const isLoggedIn = !!token; 
 
-    const logInLink = document.querySelector('.login-link')
+    const logInLink = document.querySelector('.login-link');
     const filterBar = document.querySelector('.filter-buttons');
-    const header = document.querySelector('.header')
+    const header = document.querySelector('.header');
     const projectSection = document.querySelector('.projects');
 
     //création du bouton modifier et bar d'édition
-    const openModalBtn = document.createElement('button')
+    const openModalBtn = document.createElement('button');
     openModalBtn.className = 'open-modal';
-    const openModalIcon = document.createElement('i')
+    const openModalIcon = document.createElement('i');
     openModalIcon.className = 'fa-regular fa-pen-to-square';
-    const openModalBtnContent = document.createElement('p')
+    const openModalBtnContent = document.createElement('p');
     openModalBtnContent.textContent= 'modifier';
     openModalBtn.appendChild(openModalIcon);
-    openModalBtn.appendChild(openModalBtnContent)
+    openModalBtn.appendChild(openModalBtnContent);
     projectSection.appendChild(openModalBtn);
 
-    const editionBar = document.createElement('div')
+    const editionBar = document.createElement('div');
     editionBar.className = 'edition-mode-bar';
     const editionBarContent = document.createElement('p')
-    editionBarContent.textContent = 'Mode édition'
+    editionBarContent.textContent = 'Mode édition';
   
     const editionBarIcon = document.createElement('i');
     editionBarIcon.className = 'fa-solid fa-pen-to-square';
     editionBar.appendChild(editionBarIcon);
-    editionBar.appendChild(editionBarContent)
+    editionBar.appendChild(editionBarContent);
     header.appendChild(editionBar)
 
     if (isLoggedIn) {
             console.log('Utilisateur connecté');
             header.style.marginTop = '80px';
             filterBar.style.display = 'none';
-            logInLink.innerText = 'logout'
+            logInLink.innerText = 'logout';
 
             logInLink.addEventListener('click', (event) => {
                 event.preventDefault();
@@ -168,7 +164,7 @@ function updateToEditionMode() {
                  window.location.reload();
             })
     } else {
-            console.log('Utilisateur deconnecté')
+            console.log('Utilisateur deconnecté');
             editionBar.style.display = 'none';
             openModalBtn.style.display = 'none';
             filterBar.style.display = 'flex';
@@ -181,13 +177,12 @@ function updateToEditionMode() {
 
 document.addEventListener('DOMContentLoaded', () => {
     createFilterButtons()
-    updateToEditionMode();
+    updateToEditionMode()
 });
 
 
 
 /////*******************MODALE ***********************//////
-
 // Création des modales
 function createModals() {
     modal = document.createElement('aside');
@@ -218,15 +213,9 @@ const openModal1 = function () {
     modal.addEventListener('click', closeModal);
     modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation);
     
-
-    //ouvrir modal1
     const modal1 = document.getElementById('modal1')
     modal1.style.display = 'block'
     modal1.addEventListener('click', stopPropagation);
-
-    modal.removeAttribute('aria-hidden')
-    modal.setAttribute('aria-modal', 'true')
-    modal.addEventListener('click', closeModal);
 
     if (modal1) {
         modal1.innerHTML = '';
@@ -264,7 +253,7 @@ const openModal1 = function () {
        // Réinitialiser et afficher la galerie
        if (modalGallery) {
        modalGallery.innerHTML = ''; 
-       displayGallery(works, '.modal-gallery'); // Réafficher la galerie
+       displayGallery(works, '.modal-gallery');
        }
 
     // Cacher modal2 
@@ -274,7 +263,7 @@ const openModal1 = function () {
     }
 
     // Ecouteur d'evenement sur le bouton vers la modale 2
-    const addWorkbtn = document.getElementById('add-work-picture')
+    const addWorkbtn = document.getElementById('add-work-picture');
     addWorkbtn.addEventListener('click', showModal2);
 
     closeModalBtn.addEventListener('click', closeModal); 
@@ -293,7 +282,6 @@ const closeModal = function () {
     modal.setAttribute('aria-hidden', 'true');
     modal.removeAttribute('aria-modal');
     modal.removeEventListener('click', closeModal);
-
 
     // enlever event listeners
     modal1.removeEventListener('click', stopPropagation);
@@ -370,34 +358,34 @@ const showModal2 = function() {
     
 
     //Créer le formulaire
-    const formContainer = document.createElement('div')
-    formContainer.className = 'form-container'
+    const formContainer = document.createElement('div');
+    formContainer.className = 'form-container';
     // Vider la modale pour eviter les doublons 
     formContainer.innerHTML = '';
     modal2.innerHTML = '';
 
-    const returnIcon = document.createElement('i')
-    returnIcon.className = "fa-solid fa-arrow-left"
-    returnIcon.id = 'return-button'
-    const closeBtn = document.createElement('i')
-    closeBtn.id = 'close-upload-modal'
-    const closeModalIcon = document.createElement('i')
+    const returnIcon = document.createElement('i');
+    returnIcon.className = "fa-solid fa-arrow-left";
+    returnIcon.id = 'return-button';
+    const closeBtn = document.createElement('i');
+    closeBtn.id = 'close-upload-modal';
+    const closeModalIcon = document.createElement('i');
     closeModalIcon.className = 'fa-solid fa-xmark';
     
     const title = document.createElement('h2');
     title.id = "title-modal";
     title.textContent  = 'Ajout photo';
 
-    const uploadContainer = document.createElement('div')
+    const uploadContainer = document.createElement('div');
     uploadContainer.id = 'upload-container';
 
-    const addPicBtn = document.createElement('button')
-    addPicBtn.textContent = ' + Ajouter une photo'
-    addPicBtn.id = 'add-pic-btn'
+    const addPicBtn = document.createElement('button');
+    addPicBtn.textContent = ' + Ajouter une photo';
+    addPicBtn.id = 'add-pic-btn';
 
-    const inputFile = document.createElement('input')
+    const inputFile = document.createElement('input');
     inputFile.type = 'file';
-    inputFile.accept = '.jpg, .png'
+    inputFile.accept = '.jpg, .png';
     inputFile.id = 'upload-pic-input';
 
 
@@ -524,29 +512,19 @@ async function addWork(event) {
     const inputCat = document.getElementById('category-select');
 
     // Vérifier si tous les champs sont remplis
-    if (!inputFile.files[0] || !inputTitle || !inputCat) {
+    if (!inputFile.files[0] || !inputTitle.value || !inputCat) {
         console.error('Tous les champs ne sont pas remplis');
-
-        if (!inputFile.files[0]) {
-            alert ('Sélectionnez une image.');
-        }
+        alert ('Veuillez remplir tous les champs');
 
         if (inputFile.files.length > 0) {
-            const fileSize = inputFile.files[0].size; // Taille en octets
-            const maxSize = 4194304; // 4 Mo
+            const fileSize = inputFile.files[0].size;
+            const maxSize = 4194304; 
     
             if (fileSize > maxSize) {
                 alert('Fichier trop volumineux');
                 inputFile.value = '';
             }
         }
-        if (!inputTitle.value) {
-            alert ('Veuillez saisir un titre');
-        }
-        if (!inputCat) {
-            alert ('Veuillez sélectionner une catégorie');
-        }
-        
         return;
     }
 
@@ -570,14 +548,14 @@ async function addWork(event) {
             const newWork = await response.json();
             works.push(newWork);
             displayGallery();
-            closeModal(); // Fermer la modale si la requête a fonctionné
+            closeModal(); // Fermer modale si requête ok
         } else {
             console.error('Erreur lors de l\'ajout du travail');
         }
     } catch (error) {
         console.error('Erreur', error);
     }
-}
+};
 
 
 
