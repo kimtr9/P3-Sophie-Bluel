@@ -6,6 +6,11 @@ loginForm.addEventListener('submit', async (event) => {
     const email = loginForm.querySelector("#email").value
     const password = loginForm.querySelector("#password").value
 
+    if( email.value !== email || password.value !== password) {
+        alert ('L\'identifiant ou le mot de passe est incorrect')
+        return;
+    }
+
     // Requête POST à l'API
     try {
         const response = await fetch("http://localhost:5678/api/users/login", {
